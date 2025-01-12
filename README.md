@@ -1,6 +1,48 @@
-# Known Problems
+# Home Assistant Prune
 
-## Unstable IDs
+**DISCLAIMER: Use at your own risk!** It has worked for me, it might not work for you, or even worse screw your system or eat your favorite pet.
+
+Pull Requests, Bug Reports and Thank You are welcome and appreciated.
+
+## Problem Statement
+
+Devices can be renamed outside of Home Assistant. When this happens, the integration does not propagate that change to Home Assistant, i.e., the `entity_id` is not changed. This makes sense to not break automations etc.
+
+On the other hand, that causes names outside and inside of Home Assistant to diverge over time. See this [feature request](https://community.home-assistant.io/t/reset-re-acquire-entity-id/723097) for concrete user stories.
+
+Unfortunately, Home Assistant lacks a functionality to re-acquire the current names from the integrations.
+
+Some forum ports that are related to the problem:
+
+- Feature Request (please vote!): [Reset / Re-acquire entity_id](https://community.home-assistant.io/t/reset-re-acquire-entity-id/723097)
+- Question: [Reset Hue entity ids?](https://community.home-assistant.io/t/reset-hue-entity-ids/583524)
+- Question: [Reset entity_id after name change](https://community.home-assistant.io/t/reset-entity-id-after-name-change/485269)
+- Question: [Rename entity_id for script any solutions?](https://community.home-assistant.io/t/rename-entity-id-for-script-any-solutions/338037)
+- Question: [Rename an Entity ID](https://community.home-assistant.io/t/rename-an-entity-id/608186)
+
+## Solution Approach
+1. Remove all entities from file `core.entity_registry` where `platform` matches.
+2. Remove the same entities from file `core.restore_state`, if existing.
+
+
+## Usage
+First of all, stop Home Assistant. To my experience, the integration/platform does not need to be removed.
+
+Backup your configuration directory. The script does not do backups.
+
+Run, e.g.
+
+```
+ha-prune.py --path homeassistant-config --platform hue
+```
+
+Use ``--dry-run` or `-n` to not actually write anything to disk.
+
+Restart Home Assistant. The entities should be automatically re-discovered under their new name (i.e. the names obtained from the integration).
+
+## Known Problems
+
+### Unstable IDs
 IDs like
 
 ```json
