@@ -23,6 +23,7 @@ Some forum ports that are related to the problem:
 ## Solution Approach
 1. Remove all entities from file `core.entity_registry` where `platform` matches.
 2. Remove the same entities from file `core.restore_state`, if existing.
+3. Remove the devices with matching `id` from file `core.device_registry`.
 
 
 ## Usage
@@ -30,10 +31,12 @@ First of all, stop Home Assistant. To my experience, the integration/platform do
 
 Backup your configuration directory. The script does not do backups.
 
+### Prune Entities
+
 Run, e.g.
 
 ```
-ha-prune.py --path homeassistant-config --platform hue
+ha-prune.py prune --path homeassistant-config --platform hue
 ```
 
 Use ``--dry-run` or `-n` to not actually write anything to disk.
