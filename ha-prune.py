@@ -5,13 +5,11 @@ from pathlib import Path
 
 
 import prune
+import save
+import restore
 
 
 def rename_subcommand(parser):
-    return parser
-
-
-def save_subcommand(parser):
     return parser
 
 
@@ -21,6 +19,7 @@ def parse_args():
     parser.add_argument(
         "--path",
         type=Path,
+        required=True,
         help="Home Assistant's config directory (the one where the .storage directory is in)",
     )
     parser.add_argument(
@@ -37,8 +36,16 @@ def parse_args():
     subparser = subparsers.add_parser("rename", help="Rename an entity")
     rename_subcommand(subparser)
 
-    subparser = subparsers.add_parser("save", help="Save attributes of entities")
-    save_subcommand(subparser)
+    subparser = subparsers.add_parser(
+        "save", help="Save the (friendly) name attribute of entities"
+    )
+    save.add_save_subcommand(subparser)
+
+    subparser = subparsers.add_parser(
+        "restore",
+        help="Restores the previously saved (friendly) name attribute of entities",
+    )
+    restore.add_restore_subcommand(subparser)
 
     args = parser.parse_args()
 

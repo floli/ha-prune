@@ -14,4 +14,4 @@ def write_json(filename: Path, data, dry_run=False):
 
     with open(filename, "wt") as fstream:
         logging.info("Writing file %s", filename)
-        json.dump(data, fstream)
+        json.dump(data, fstream, indent=4, ensure_ascii=False)

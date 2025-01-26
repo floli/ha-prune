@@ -39,9 +39,36 @@ Run, e.g.
 ha-prune.py prune --path homeassistant-config --platform hue
 ```
 
-Use ``--dry-run` or `-n` to not actually write anything to disk.
+Use `--dry-run` or `-n` to not actually write anything to disk.
 
 Restart Home Assistant. The entities should be automatically re-discovered under their new name (i.e. the names obtained from the integration).
+
+### Save and restore (friendly) names
+
+The command:
+
+```
+ha-prune.py --path homeassistant-config save "out.json"
+```
+
+saves the friendly names, if set, for all entities. It produces a file like:
+
+```
+{
+    "switch.horus": "Horus",
+    "sensor.sentinel_1_air_temperature": "Flur",
+    "device_tracker.thermostat_wohnzimmer": "Thermostat Wohnzimmer",
+    "switch.janus_1": "Heizlüfter",
+}
+```
+
+vice versa
+
+```
+ha-prune.py --path homeassistant-config restore out.json
+```
+
+restores the friendly names, if modified.
 
 ## Known Problems
 
