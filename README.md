@@ -36,7 +36,7 @@ Backup your configuration directory. The script does not do backups.
 Run, e.g.
 
 ```
-ha-prune.py prune --path homeassistant-config --platform hue
+ha-prune.py --path homeassistant-config prune --platform hue
 ```
 
 Use `--dry-run` or `-n` to not actually write anything to disk.
